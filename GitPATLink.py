@@ -7,20 +7,41 @@ import os
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += "HIGH:!DH:!aNULL"
 app = Flask(__name__)
 
+@app.route("/link/admin")
+def Admin():
+    AdminID = request.args.get('ID', default = None, type = str)
+    if not AdminID == "noko1024":
+        return make_response("Error")
+    
+    conn = sqlite3.connect('GitPATLink.db')
+    c = conn.cursor()
+    c.execute("create table if not exists tableDB(ID txt primary key,PAT txt)")
+    conn.commit()
+    conn.close()
+
 @app.route("/link/Add")
 #PAT新規登録
 def TokenAdd():
+    conn = sqlite3.connect('GitPATLink.db')
+    c = conn.cursor()
+    
     userID = request.args.get('ID', default = None, type = str)
     PAT = request.args.get('PAT', default = None, type = str)
     return make_response(userID)
 
 @app.route("/link/Del")
 def TokenDel():
+    conn = sqlite3.connect('GitPATLink.db')
+    c = conn.cursor()
+
     userID = request.args.get('ID', default = None, type = str)
     return make_response(userID)
 
 @app.route("/link/Auth")
 def TokenAuth():
+    conn = sqlite3.connect('GitPATLink.db')
+    c = conn.cursor()
+    
     userID = request.args.get('ID', default = None, type = str)
     return make_response(userID)
 
