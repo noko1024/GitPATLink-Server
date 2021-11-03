@@ -1,8 +1,8 @@
-from logging import debug
 from flask import Flask, json,request,make_response,jsonify,redirect,render_template,session
 import sqlite3
 import requests
 import os
+import threading
 
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += "HIGH:!DH:!aNULL"
 app = Flask(__name__)
@@ -27,6 +27,13 @@ def TokenAdd():
     
     userID = request.args.get('ID', default = None, type = str)
     PAT = request.args.get('PAT', default = None, type = str)
+    if userID == None or PAT == None:
+        return make_response("Error")
+
+    
+    
+    conn.commit()
+    conn.close()
     return make_response(userID)
 
 @app.route("/link/Del")
@@ -35,6 +42,7 @@ def TokenDel():
     c = conn.cursor()
 
     userID = request.args.get('ID', default = None, type = str)
+    
     return make_response(userID)
 
 @app.route("/link/Auth")
