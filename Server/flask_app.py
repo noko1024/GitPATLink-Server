@@ -1,5 +1,6 @@
 from flask import Flask, json,request,make_response,jsonify,redirect,render_template,session
 import sqlite3
+import redis
 import requests
 import os
 import threading
@@ -7,6 +8,7 @@ import threading
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += "HIGH:!DH:!aNULL"
 app = Flask(__name__)
 
+"""
 @app.route("/link/admin")
 def Admin():
     AdminID = request.args.get('ID', default = None, type = str)
@@ -18,6 +20,7 @@ def Admin():
     c.execute("create table if not exists tableDB(ID txt primary key,PAT txt)")
     conn.commit()
     conn.close()
+"""
 
 @app.route("/link/Add")
 #PAT新規登録
@@ -38,8 +41,9 @@ def TokenAdd():
 
 @app.route("/link/Del")
 def TokenDel():
-    conn = sqlite3.connect('GitPATLink.db')
-    c = conn.cursor()
+    
+    #conn = sqlite3.connect('GitPATLink.db')
+    #c = conn.cursor()
 
     userID = request.args.get('ID', default = None, type = str)
     
@@ -47,11 +51,13 @@ def TokenDel():
 
 @app.route("/link/Auth")
 def TokenAuth():
-    conn = sqlite3.connect('GitPATLink.db')
-    c = conn.cursor()
+    #conn = sqlite3.connect('GitPATLink.db')
+    #c = conn.cursor()
     
     userID = request.args.get('ID', default = None, type = str)
     return make_response(userID)
 
+"""
 port = int(os.environ.get("PORT", 5000))
 app.run(host='0.0.0.0', port=80)
+"""
