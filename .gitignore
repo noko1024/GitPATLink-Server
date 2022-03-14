@@ -1,0 +1,5 @@
+#nodeのlibファイル
+Server/PATServer/node_modules
+
+#Redisの永続化ディレクトリ
+Server/redisData/*.rdb
