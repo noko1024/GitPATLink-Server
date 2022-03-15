@@ -7,9 +7,12 @@ const saltRounds = 10
 
 //redisと接続するための設定
 const config ={
-    "port":6379
+    socket:{
+        "host":process.env.REDIS_HOST,
+        "port":process.env.REDIS_PORT
+    }
 }
-const client = redis.createClient() 
+const client = redis.createClient(config)
 
 //expressでjsonのやり取りを行うため
 app.use(express.json());
@@ -135,4 +138,4 @@ app.post("/link/api/remove",async function(request,response) {
     response.status(403).send({"status":"AuthError"})
 })
 
-app.listen(process.argv[2],"0.0.0.0", () => console.log('GitPATLink Server Online'))
+app.listen(process.env.SERVER_PORT,"0.0.0.0", () => console.log('GitPATLink Server Online'))

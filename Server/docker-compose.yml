@@ -1,15 +1,18 @@
-version: '3'
+version: "3"
 services:
   redis:
     image: "redis:latest"
-    ports:
-      - "6379:6379"
     volumes:
       - "./redisData:/data"
   nodejs:
     build: 
       context: .
-      dockerfile: ./PATServer/Dockerfile
+      dockerfile: "./PATServer/dockerfile"
     ports:
       - "4000:4000"
+    environment:
+      - "SERVER_PORT=4000"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+
     
