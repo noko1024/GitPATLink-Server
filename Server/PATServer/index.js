@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const redis = require("redis")
 
 const app = express()
@@ -17,7 +17,7 @@ const client = redis.createClient(config)
 //expressでjsonのやり取りを行うため
 app.use(express.json());
 
-app.post('/link/api/create', async function (request, response) {
+app.post('/link/api/add', async function (request, response) {
     //Request
     //  string id
     //  string pass
@@ -29,6 +29,7 @@ app.post('/link/api/create', async function (request, response) {
     
     if ( typeof id != "string" || typeof password != "string" || typeof token != "string" ){
         response.status(400).json({"status":"BadRequest"})
+        console.log("GG")
         return
     }
     //DBと接続
