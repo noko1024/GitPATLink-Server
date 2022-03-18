@@ -1,0 +1,8 @@
+#nodeのlibファイル
+Server/PATServer/node_modules
+
+#Redisの永続化ディレクトリ
+Server/redisData/*.rdb
+
+#RustのBuild時生成ディレクトリ
+Client/target
