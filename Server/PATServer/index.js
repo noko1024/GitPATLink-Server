@@ -43,7 +43,7 @@ app.post('/link/api/add', async function (request, response) {
         const passwordCheck = await bcrypt.compare(password,result.hashPassword)
         //Passwordが不一致の場合
         if (passwordCheck == false){
-            response.status(403).json({"status":"AuthError"})
+            response.status(401).json({"status":"AuthError"})
         }
 
     }
@@ -80,7 +80,7 @@ app.post("/link/api/get",async function(request,response) {
     //テーブルに存在しない場合
     if (keyExist == 0){
         await client.quit()
-        response.status(400).json({"status":"BadRequest"})
+        response.status(401).json({"status":"AuthError"})
         return
     }
 
@@ -91,7 +91,7 @@ app.post("/link/api/get",async function(request,response) {
     //Password照合
     const passwordCheck = await bcrypt.compare(password,result.hashPassword)
     if (passwordCheck == false){
-        response.status(403).json({"status":"AuthError"})
+        response.status(401).json({"status":"AuthError"})
         return
     }
     console.log(result.token)
@@ -118,7 +118,7 @@ app.post("/link/api/remove",async function(request,response) {
     const keyExist = await client.exists(id)
     //テーブルに存在しない場合
     if (keyExist == 0){
-        response.status(400).json({"status":"BadRequest"})
+        response.status(401).json({"status":"AuthError"})
         await client.quit()
         return
     }
@@ -136,7 +136,7 @@ app.post("/link/api/remove",async function(request,response) {
         return
     }
     await client.quit()
-    response.status(403).send({"status":"AuthError"})
+    response.status(401).send({"status":"AuthError"})
 })
 
 app.listen(process.env.SERVER_PORT,"0.0.0.0", () => console.log('GitPATLink Server Online'))
