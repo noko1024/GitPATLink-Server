@@ -21,15 +21,15 @@ app.post('/link/api/add', async function (request, response) {
     //Request
     //  string id
     //  string pass
-    //  string token
+    //  string user_info
 
     const id = request.body.id
     const password = request.body.password
-    const token = request.body.token
+    const userinfo = request.body.userinfo
+    console.log(request.body)
     
-    if ( typeof id != "string" || typeof password != "string" || typeof token != "string" ){
+    if ( typeof id != "string" || typeof password != "string" || typeof userinfo != "string"){
         response.status(400).json({"status":"BadRequest"})
-        console.log("GG")
         return
     }
     //DBと接続
@@ -44,6 +44,8 @@ app.post('/link/api/add', async function (request, response) {
         //Passwordが不一致の場合
         if (passwordCheck == false){
             response.status(401).json({"status":"AuthError"})
+            await client.quit()
+            return
         }
 
     }
@@ -52,7 +54,7 @@ app.post('/link/api/add', async function (request, response) {
     
     //hash形式で保存
     await client.hSet(id,"hashPassword",hashPassword)
-    await client.hSet(id,"token",token)
+    await client.hSet(id,"userinfo",userinfo)
     await client.quit()
 
     response.status(200).send(null)
@@ -64,7 +66,7 @@ app.post("/link/api/get",async function(request,response) {
     //  string id
     //  string pass
     //Response
-    //  strin token
+    //  string userinfo
 
     const id = request.body.id
     const password = request.body.password
@@ -94,8 +96,7 @@ app.post("/link/api/get",async function(request,response) {
         response.status(401).json({"status":"AuthError"})
         return
     }
-    console.log(result.token)
-    response.status(200).send(result.token)
+    response.status(200).send(result.userinfo)
 })
 
 
