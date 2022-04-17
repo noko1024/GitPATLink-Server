@@ -4,15 +4,29 @@ services:
     image: "redis:latest"
     volumes:
       - "./redisData:/data"
+    networks:
+      - gpat-db-internal
+
   nodejs:
     build: 
       context: .
       dockerfile: "./PATServer/dockerfile"
     ports:
-      - "4000:4000"
+      - "80"
     environment:
-      - "SERVER_PORT=4000"
+      - "SERVER_PORT=80"
       - "REDIS_HOST=redis"
       - "REDIS_PORT=6379"
+      - VIRTUAL_HOST=nextcloud.main.noko1024.net
+      - LETSENCRYPT_HOST=nextcloud.main.noko1024.net
+    networks:
+      - gpat-db-internal
+      - proxy-network
+
+networks:
+  default:
+  proxy-network:
+    external: true
+  gpat-db-internal:
 
     

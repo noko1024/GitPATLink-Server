@@ -6,6 +6,6 @@ COPY ./* /Server/
 #nodeのライブラリをインストール(package.jsonを参照してる)
 RUN npm install
 
-EXPOSE 4000
+EXPOSE 80
 
 CMD ["node","index.js"]
